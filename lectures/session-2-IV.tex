@@ -1,0 +1,48 @@
+\documentclass[11pt,a4paper,english]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[sc]{mathpazo}
+\usepackage{amsmath}
+\usepackage[top=2.5cm, bottom=2.5cm, left=2.25cm, right=2.25cm,footskip=1.5cm]{geometry}
+
+\title{Session 2 - IV}
+\author{}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\section*{Para esta sesión, seguiremos el artículo:}
+Angrist, J. D., \& Krueger, A. B. (1991). Does compulsory school attendance affect schooling and earnings? The Quarterly Journal of Economics, 106(4), 979-1014.
+
+\section*{Preguntas Conceptuales}
+
+\begin{enumerate}
+    \item Expón claramente la pregunta principal de investigación que el autor pretende responder. ¿Por qué es esta pregunta importante para los responsables de políticas públicas?
+    \item Identifica el(los) instrumento(s) utilizado(s) por los autores en este estudio. ¿Qué variable(s) están utilizando estos instrumentos para estimar?
+    \item ¿Qué condiciones debe cumplir un instrumento para ser considerado válido?
+    \begin{enumerate}
+        \item Explica estas condiciones tanto de manera general como en el contexto específico del(los) instrumento(s) utilizado(s) en el artículo.
+        \item Utiliza variables aleatorias y resultados potenciales para ilustrar estas condiciones.
+    \end{enumerate}
+\end{enumerate}
+
+\section*{Preguntas de Análisis de Datos}
+
+El conjunto de datos adjunto es una submuestra del estudio de Angrist y Krueger. Incluye específicamente datos de hombres nacidos entre 1930 y 1939, que contienen la siguiente información del Censo de 1980:
+\begin{enumerate}
+    \item LWKLYWGE: logaritmo de los ingresos semanales
+    \item EDUC: años de educación completados
+    \item YOB: año de nacimiento
+    \item QOB: trimestre de nacimiento
+    \item Edad, estado civil (1=casado), raza (1=negro), variable ficticia urbana (SMSA, 1= centro de la ciudad)
+    \item 8 variables ficticias de la región de residencia (NEWENG, MIDATL, ENOCENT, WNOCENT, SOATL, ESOCENT, WSOCENT, MT)
+\end{enumerate}
+
+\begin{enumerate}
+    \item La Tabla III presenta las estimaciones OLS y de Wald sobre los rendimientos de la educación. Replica estas estimaciones (encontradas en las dos últimas filas) para hombres nacidos entre 1930 y 1939, como se indica en el Panel B. Consulta la nota al pie 13 en Angrist y Krueger (1991) para obtener detalles sobre cómo calcular la estimación de Wald.
+    \item La Tabla V informa sobre diferentes especificaciones del TSLS para hombres nacidos entre 1930-1939. Replica el resultado de 2SLS de la Columna 2 de la Tabla V. En lugar de usar la función IV incorporada, sigue estos pasos: primero, regresa la educación directamente sobre los instrumentos para obtener la variable de educación predicha. Luego, usa esta variable de educación predicha para estimar el rendimiento salarial de la educación. ¿Qué nos dice esto?
+    \item La Tabla V presenta varias especificaciones del TSLS para hombres nacidos entre 1930 y 1939. Realiza regresiones TSLS replicando las Columnas 1, 2, 5 y 6. Para la Columna 2, utiliza un conjunto completo de variables ficticias de trimestre de nacimiento por año de nacimiento como instrumentos para la educación, e incluye efectos fijos de año. Para la Columna 6, usa el mismo conjunto de variables ficticias de trimestre de nacimiento por año de nacimiento como instrumentos para la educación, e incluye efectos fijos de región, efectos fijos de año y variables ficticias para raza, residencia urbana y estado civil. Crea una tabla bien formateada en LaTeX.
+\end{enumerate}
+
+\end{document}
