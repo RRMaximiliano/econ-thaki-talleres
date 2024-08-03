@@ -1,0 +1,48 @@
+\documentclass[11pt,a4paper,english]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[sc]{mathpazo}
+\usepackage{amsmath}
+\usepackage[top=2.5cm, bottom=2.5cm, left=2.25cm, right=2.25cm,footskip=1.5cm]{geometry}
+
+\title{Session 3 - RDD}
+\author{}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\section*{Para esta sesión:} Replicaremos algunos de los resultados del
+siguiente artículo: Ozier, Owen. (2018). "The Impact of Secondary Schooling in Kenya: A Regression Discontinuity Analysis," Journal of Human Resources, 53(1), 157-188.
+
+\section*{Preguntas Conceptuales}
+
+\textbf{Contexto.} La pregunta principal de investigación que el autor, Ozier (2015), pretende responder es: ¿Cuáles son los impactos de la educación secundaria en la acumulación de capital humano, la elección ocupacional y la fertilidad de los jóvenes adultos en Kenia? Esta pregunta de investigación tiene implicaciones políticas significativas, particularmente para las estrategias de desarrollo educativo y económico en Kenia. Si la educación secundaria afecta positivamente el capital humano y las elecciones ocupacionales, las políticas que promuevan un acceso más amplio a la educación secundaria podrían mejorar el desarrollo económico y los resultados de vida individuales. Además, la reducción de las tasas de embarazo adolescente entre las mujeres podría tener implicaciones políticas a largo plazo relacionadas con la demografía y la salud, influyendo en las decisiones relacionadas con la planificación familiar y los programas educativos.
+
+\begin{enumerate}
+    \item El autor utilizó un diseño de discontinuidad de regresión porque creía que una especificación OLS simple sería insuficiente. Considera el efecto de asistir a cualquier escuela secundaria en uno de los resultados de interés (nivel educativo alcanzado, tasa de autoempleo de baja habilidad, fertilidad). ¿Cuáles son dos posibles variables omitidas (confusores) que sesgarían los resultados de una especificación OLS simple? Explica el mecanismo de la variable omitida y usa la fórmula de sesgo de variable omitida para argumentar si llevaría a una subestimación o sobreestimación del efecto verdadero.
+    \item ¿Por qué es importante probar la continuidad de las características observables antes del tratamiento a través del corte de puntuación de la prueba?
+    \item Explica el propósito de la Figura 4. ¿Cómo se compara con la Figura 6? Explica cómo se construyen ambas figuras.
+\end{enumerate}
+
+\section*{Preguntas de Análisis de Datos}
+
+\subsection*{Principales variables de interés:}
+\begin{itemize}
+    \item \texttt{kcpe\_self\_or\_matched\_recent}: Puntuación más reciente del KCPE, autoinformada, corregida si los datos administrativos están disponibles (escala de 500)
+    \item \texttt{finishsecondary}: Indicador de completar al menos 12 años de escolaridad (escuela secundaria)
+    \item \texttt{has\_score\_2016}: Indicador de reportar una puntuación (posible y válida) del KCPE
+    \item \texttt{rkcpe}: Puntuación del KCPE (primer intento, datos administrativos confirmados), reescalada y recentrada en los cortes relevantes ((KCPE – corte)/100)
+    \item \texttt{passrkcpe}: Indicador de si la puntuación del KCPE (primer intento, datos administrativos confirmados, recentrada en los cortes) supera el corte relevante
+    \item \texttt{int\_pass\_rkcpe}: Interacción entre rkcpe y passrkcpe
+    \item \texttt{female}: Indicador de si el encuestado es mujer
+    \item \texttt{ravens\_plus\_vocab\_standardized}: Suma estandarizada de las puntuaciones estandarizadas en las pruebas de Ravens B y Vocabulario
+\end{itemize}
+
+\begin{enumerate}
+    \item Crea estadísticas resumidas para kcpe\_self\_or\_matched\_recent, finishsecondary, y otras dos variables de tu elección de la Tabla 1. Para coincidir con la Tabla 1, restringe las observaciones con una puntuación válida de KCPE (has\_score\_2016 == 1), y para las variables de resultado, además restringe a un ancho de banda de 80 puntos alrededor del corte de puntuación (el valor absoluto de rkcpe < 0.8). Ten en cuenta que los Paneles D y E requieren restricciones adicionales.
+    \item Crea una tabla que ilustre el efecto de primer nivel del corte de puntuación de la prueba (passrkcpe) sobre la probabilidad de completar la escuela secundaria (finishsecondary). Replica los coeficientes y errores estándar de las Columnas 1, 4 y 7 de la Tabla 2, las estimaciones de primer nivel para las tres muestras diferentes (Agrupadas, Masculinas y Femeninas) sin controles. Usa un modelo lineal, un núcleo uniforme y un ancho de banda de 80 puntos alrededor del corte de puntuación (establece el valor absoluto de rkcpe < 0.8). Agrupa en el nivel de puntuación de la prueba (rkcpe), pero ten en cuenta que está en debate cuándo se deben agrupar los errores estándar en los diseños de discontinuidad de regresión.
+    \item Crea un gráfico de discontinuidad de regresión usando una aproximación polinomial lineal, para ilustrar el efecto de superar el corte en las puntuaciones cognitivas en la adultez (ravens\_plus\_vocab\_standardized). Para replicar el panel B de la Figura 6, usa datos dentro de un ancho de banda de 80 puntos del corte de puntuación, y usa intervalos uniformemente espaciados de 10 puntos.
+\end{enumerate}
+
+\end{document}

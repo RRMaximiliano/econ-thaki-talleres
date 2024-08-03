@@ -1,0 +1,84 @@
+\documentclass[11pt,a4paper,english]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[sc]{mathpazo}
+\usepackage{amsmath}
+\usepackage[top=2.5cm, bottom=2.5cm, left=2.25cm, right=2.25cm,footskip=1.5cm]{geometry}
+
+\title{Session 4 - DID}
+\author{}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\section*{Para esta sesión:} Replicaremos algunos de los resultados del
+siguiente artículo: Stevenson, Betsey, and Justin Wolfers. 2006. "Bargaining in the Shadow of the Law: Divorce Laws and Family Distress," Quarterly Journal of Economics, 121 (1): 267-88.
+
+
+\textbf{Contexto.} El impacto del divorcio unilateral en la violencia familiar y su potencial para reducir el suicidio y el homicidio conyugal ha sido objeto de estudio en varias investigaciones. Un estudio ha revelado que los estados que adoptaron leyes de divorcio unilateral experimentaron reducciones significativas en la violencia doméstica, suicidios femeninos y homicidios de mujeres por parte de sus parejas. Al permitir que un cónyuge solicite el divorcio sin el consentimiento del otro, estas leyes no solo han ayudado a las víctimas a escapar de relaciones perjudiciales, sino que también han disuadido la violencia potencial en matrimonios en curso. Esto indica un caso sólido para el impacto positivo del divorcio unilateral en la seguridad pública y el bienestar individual.
+
+Las leyes de divorcio unilateral pueden reducir las tasas de suicidio entre las mujeres casadas a través de dos canales principales: (1) Escape de relaciones violentas: estas leyes permiten que las mujeres en matrimonios abusivos o infelices obtengan un divorcio sin necesitar el consentimiento de su cónyuge, proporcionándoles una opción de salida de situaciones peligrosas y angustiosas. (2) Redistribución del poder de negociación: al cambiar la dinámica dentro del matrimonio, estas leyes mejoran la posición de negociación de las mujeres al mejorar sus opciones externas. Este cambio puede llevar a una reducción del abuso doméstico y a un mejor ambiente marital en general, lo que puede disminuir la desesperación que podría conducir al suicidio.
+
+Para investigar estos efectos, los autores utilizaron un diseño de diferencias
+en diferencias (DID), ya que consideraron que una comparación entre años-estados
+con y sin divorcio unilateral sería insuficiente. Dos posibles factores de
+confusión que podrían sesgar los resultados de una comparación simple y que son
+difíciles de medir son la variación en las políticas de bienestar social y los
+cambios en las actitudes culturales hacia el matrimonio y el divorcio. El
+mecanismo de la variable omitida puede influir en los resultados a través de
+estos factores no observados que afectan tanto la adopción de leyes de divorcio
+unilateral como las tasas de violencia y suicidio. Utilizando la fórmula de
+sesgo por variable omitida, se puede argumentar que, si estos factores están
+correlacionados positivamente con la adopción de las leyes y negativamente con
+la violencia o el suicidio, la omisión de estas variables llevaría a una
+sobreestimación del efecto verdadero del divorcio unilateral en la reducción de
+la violencia y el suicidio.
+
+\section*{Preguntas Conceptuales}
+
+\begin{enumerate}
+    \item ¿Qué afirma la suposición de tendencias paralelas en este contexto específico? ¿Por qué piensas que es razonable o no? Explica esto de una manera que alguien no versado en estadísticas pueda entender.
+    
+    \item Los autores utilizan la tasa de suicidios de todas las mujeres, no solo de aquellas que han estado casadas, "para evitar problemas de endogeneidad planteados por la posibilidad de que las decisiones de matrimonio puedan responder al régimen de divorcio". Da un ejemplo de tal problema de endogeneidad. ¿Cómo sesgaría los resultados?
+    
+    \item Menciona dos maneras en que la Figura I aumenta la credibilidad de los resultados presentados en la Tabla I. ¿Cambiarías algo acerca de cómo se presenta la Figura I?
+\end{enumerate}
+
+\section*{Preguntas de Análisis de Datos}
+
+\subsection*{Principales variables de interés:}
+Los datos para este conjunto de problemas son un panel de estado por año. Las observaciones se identifican de manera única por estado, año y sexo. Los datos tienen las siguientes variables clave:
+\begin{itemize}
+    \item \texttt{st} y \texttt{year} son las variables de estado y año.
+    \item \texttt{sex} indica si el resultado se observa para hombres o mujeres. Se codifica como 1 para hombres y 2 para mujeres.
+    \item \texttt{divyear} es el año de la reforma del divorcio unilateral. Se codifica como 1950 si el estado siempre tuvo leyes de divorcio unilateral y 2000 si la reforma de divorcio unilateral nunca se aprobó.
+    \item \texttt{unilateral} indica si el divorcio unilateral es legal.
+    \item \texttt{suiciderate\_jag} es la tasa de suicidios.
+\end{itemize}
+
+\begin{enumerate}
+    \item Comenzaremos estimando una simple regresión de diferencias en diferencias (DID) 2x2. El año en que el mayor número de estados aprobó leyes de divorcio unilateral fue 1973. Usando datos de los estados que aprobaron leyes de divorcio unilateral en 1973 y aquellos que nunca aprobaron leyes de divorcio unilateral, ejecuta una simple regresión DID 2x2 para estimar el efecto de las leyes de divorcio unilateral en ln(suiciderate\_jag) para mujeres, agrupando los errores estándar a nivel estatal. Reporta el efecto DID estimado y el error estándar a continuación.
+    
+    \item Interpreta la estimación puntual. Explica qué grupos de tratamiento/control se están comparando y cómo se estima el efecto para que alguien sin formación estadística pueda entender. (3 puntos)
+    
+    \item Ahora evaluaremos si la suposición de tendencias paralelas es razonable en este contexto al estimar un estudio de eventos, agrupando datos de todos los estados.
+    \begin{enumerate}
+        \item Considera la siguiente especificación de regresión del estudio de eventos: \begin{equation}\label{eq:event}
+              Y_{st} = \sum_{j \neq \mathbf{-1}} \beta_j 1(t - \text{divyear}_{s} = j) + \gamma_s + \delta_t + \varepsilon_{st}, 
+        \end{equation}
+    \end{enumerate}
+
+    \item Ahora estima el efecto DID agrupado usando una especificación de regresión de efectos fijos de dos vías.
+    \begin{enumerate}
+        \item Reporta el coeficiente y el error estándar agrupado a nivel estatal. ¿Cómo se compara la estimación puntual con la estimación simple 2x2 de la pregunta 13? ¿Cómo se comparan los errores estándar? (2 puntos)
+        
+        \item ¿Cómo debemos considerar la estimación de efectos fijos de dos vías? ¿Qué comparaciones se están haciendo? ¿Cuántas hay? Clasifica estas comparaciones en cuatro grupos distintos.
+    \end{enumerate}
+\end{enumerate}
+
+\end{document}
+
+
+\end{document}
+
