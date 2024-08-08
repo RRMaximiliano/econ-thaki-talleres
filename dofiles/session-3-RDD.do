@@ -71,7 +71,6 @@
 * Switch to install programs    
   local install = 0  
   
-  
   local programs = "reghdfe estout coefplot schemepack"
   if (`install'==1) { 
     foreach p in `programs' {
@@ -93,10 +92,10 @@
   estpost sum age_at_klps2_approximate female fathers_education mothers_education         ///
     if has_score_2016 == 1
     
-  esttab using                    ///
-    "${outputs}/RDD/tabs/ex1.tex",   ///
-    replace  ${style}             ///
-    cells("mean(fmt(%9.2fc)) sd(par fmt(%9.2fc)) count(fmt(%9.0gc))")     ///
+  esttab using                        ///
+    "${outputs}/RDD/tabs/ex1.tex",    ///
+    replace  ${style}                 ///
+    cells("mean(fmt(%9.2fc)) sd(par fmt(%9.2fc)) count(fmt(%9.0gc))") ///
     prehead(`"\begin{tabular}{@{}l*{3}{r}}"'                          ///
           `"\toprule \toprule"'                                       ///
           `"                 &      & Standard  & Sample \\"'         ///
@@ -104,40 +103,42 @@
           `"  & (1)  & (2) & (3) \\ "'                                /// 
           `"\toprule"'                                                ///
           `"\multicolumn{4}{@{}l}{\textbf{Panel A: Respondent Characteristics among Those with KCPE Scores}} \\"')                                 
-
   // Panel B
-  estpost sum kcpe_self_or_matched_recent max_grade_complete attending_school_klps2       ///
+  estpost sum kcpe_self_or_matched_recent max_grade_complete attending_school_klps2  ///
     anysecondary finishsecondary postsecondary if has_score_2016==1
-  esttab using                    ///
-    "${outputs}/RDD/tabs/ex1.tex",   ///
-    append  ${style}              ///
+  
+  esttab using                        ///
+    "${outputs}/RDD/tabs/ex1.tex",    ///
+    append  ${style}                  ///
     cells("mean(fmt(%9.2fc)) sd(par fmt(%9.2fc)) count(fmt(%9.0gc))")     ///
-    prehead(`"\multicolumn{4}{@{}l}{\textbf{Panel B: First Stage: Education Characteristics}} \\"') ///
+    prehead(`"\multicolumn{4}{@{}l}{\textbf{Panel B: First Stage: Education Characteristics}} \\"') 
 
   // Panel C
   estpost sum vocabulary_standardized ravens_standardized ravens_plus_vocab_standardized  ///
     if has_score_2016==1 & abs(rkcpe)<`absvalue'
-  esttab using                    ///
-    "${outputs}/RDD/tabs/ex1.tex",   ///
-    append  ${style}              ///
+    
+  esttab using                        ///
+    "${outputs}/RDD/tabs/ex1.tex",    ///
+    append  ${style}                  ///
     cells("mean(fmt(%9.2fc)) sd(par fmt(%9.2fc)) count(fmt(%9.0gc))")     ///
-    prehead(`"\multicolumn{4}{@{}l}{\textbf{Panel C: Cognitive Outcomes within 80-Point Bandwidth}} \\"') ///    
+    prehead(`"\multicolumn{4}{@{}l}{\textbf{Panel C: Cognitive Outcomes within 80-Point Bandwidth}} \\"')   
     
   // Panel D  
   estpost sum age_at_klps2_approximate attending_school_klps2 employed self_employed      ///
     if has_score_2016==1 & abs(rkcpe)<`absvalue' & female==0 & psdp_std98 > 5
-  esttab using                    ///
-    "${outputs}/RDD/tabs/ex1.tex",   ///
-    append  ${style}              ///
+  esttab using                        ///
+    "${outputs}/RDD/tabs/ex1.tex",    ///
+    append  ${style}                  ///
     cells("mean(fmt(%9.2fc)) sd(par fmt(%9.2fc)) count(fmt(%9.0gc))")     ///
-    prehead(`"\multicolumn{4}{@{}l}{\textbf{Panel D: Labor Market Outcomes for Older Men within 80-Point Bandwidth}} \\"') ///    
+    prehead(`"\multicolumn{4}{@{}l}{\textbf{Panel D: Labor Market Outcomes for Older Men within 80-Point Bandwidth}} \\"') 
     
   // Panel E    
   estpost sum age_at_klps2_approximate pregnant_by_18                                     ///
     if (has_score_2016==1 & female==1 & age_at_klps2_approximate >= 18 & abs(rkcpe) < `absvalue')
-  esttab using                    ///
-    "${outputs}/RDD/tabs/ex1.tex",   ///
-    append  ${style}              ///
+    
+  esttab using                        ///
+    "${outputs}/RDD/tabs/ex1.tex",    ///
+    append  ${style}                  ///
     cells("mean(fmt(%9.2fc)) sd(par fmt(%9.2fc)) count(fmt(%9.0gc))")     ///
     prehead(`"\multicolumn{4}{@{}l}{\textbf{Panel E: Fertility within 80-Point Bandwidths}} \\"') ///
     postfoot(`"\bottomrule \bottomrule \end{tabular}"')             
@@ -152,8 +153,7 @@
 	lab var passrkcpe       "KCPE $\geq$ cutoff"
 	lab var rkcpe           "KCPE centered at cutoff"
 	lab var int_pass_rkcpe  "(KCPE $\geq$ cutoff) $\times$ KCPE"
-
-  
+    
   eststo clear
   eststo est1: reg `outcome' passrkcpe rkcpe int_pass_rkcpe if abs(rkcpe)<`absvalue', vce(cluster rkcpe)
   estadd local controls No
@@ -165,7 +165,7 @@
   test passrkcpe=0
   estadd scalar fstat = `r(F)'
   
-  eststo este: reg `outcome' passrkcpe rkcpe int_pass_rkcpe if abs(rkcpe)<`absvalue' & female==1, vce(cluster rkcpe)
+  eststo est3: reg `outcome' passrkcpe rkcpe int_pass_rkcpe if abs(rkcpe)<`absvalue' & female==1, vce(cluster rkcpe)
   estadd local controls No
   test passrkcpe=0
   estadd scalar fstat = `r(F)'

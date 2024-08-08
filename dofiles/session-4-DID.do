@@ -70,14 +70,14 @@
   
 * Switch to install programs    
   local install = 0  
-  
-  
+ 
   local programs = "reghdfe estout coefplot schemepack"
   if (`install'==1) { 
     foreach p in `programs' {
       ssc install `p'
     }
   }
+  
 * ------------------------------------------------------------------------------ 
 * Exercises
 * ------------------------------------------------------------------------------
@@ -96,18 +96,18 @@
   replace insample = 1 if divyear == 1973 // Passed the law in 1973
   replace insample = 1 if divyear == 2000 // Never passed the law
   
-  
+  // TWO WAY FIXED EFFECTS
   encode st, gen(state)
   eststo clear
   eststo est1: reghdfe ln_suiciderate_jag unilateral if insample == 1, abs(state year) vce(cluster state)
-  estadd local se_fe "Yes"
-  estadd local ye_fe "Yes"
+    estadd local se_fe "Yes"
+    estadd local ye_fe "Yes"
   eststo est2: reghdfe ln_suiciderate_jag unilateral if insample == 1 & sex == 1, abs(state year) vce(cluster state)
-  estadd local se_fe "Yes"
-  estadd local ye_fe "Yes"  
+    estadd local se_fe "Yes"
+    estadd local ye_fe "Yes"  
   eststo est3: reghdfe ln_suiciderate_jag unilateral if insample == 1 & sex == 2, abs(state year) vce(cluster state)
-  estadd local se_fe "Yes"
-  estadd local ye_fe "Yes"  
+    estadd local se_fe "Yes"
+    estadd local ye_fe "Yes"  
   
   esttab est* using "${outputs}/DID/tabs/ex1.tex", replace ${style2}  ///
     prehead(`"\begin{tabular}{@{}l*{3}{c}}"'    ///
@@ -116,8 +116,8 @@
           `"  & (1) & (2)   & (3)     \\ "'     /// 
           `"\toprule"')                         ///
     postfoot(`"\bottomrule \bottomrule \end{tabular}"')         ///
-    stats(se_fe ye_fe N r2, ///
-      label("State FEs" "Year FEs" "Observations" "\(R^2\)" ) ///
+    stats(se_fe ye_fe N r2,                                     ///
+      label("State FEs" "Year FEs" "Observations" "\(R^2\)" )   ///
       fmt(%9.3f %9.3f %9.0gc %9.3f))    
   
   
@@ -150,8 +150,6 @@
       label("Observations" "\(R^2\)" ) ///
       fmt(%9.0gc %9.3f))    
     
-  
-  
   * ----------------------------------------------------------------------------
   // Exercise 2
   * ----------------------------------------------------------------------------  
@@ -191,7 +189,8 @@
   save `temp'
   
   regsave using "${outputs}/DID/tabs/results", replace ci tstat pval 
-  use "${outputs}/tabs/results", clear 
+  
+  use "${outputs}/DID/tabs/results", clear 
   
   encode var, gen(dvar)
   gen n = real(regexs(1)) if regexm(var,"([0-9]+)")
@@ -211,7 +210,6 @@
     
 	graph export "${outputs}/DID/figs/event_study.png", as(png) replace	
   
-    
   * ----------------------------------------------------------------------------
   // Exercise 3
   * ----------------------------------------------------------------------------      
